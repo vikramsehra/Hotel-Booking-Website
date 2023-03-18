@@ -9,6 +9,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Reserve = ({ setOpen, hotelId }) => {
+    const navigate = useNavigate();
     const [selectedRooms, setSelectedRooms] = useState([]);
     const { data, loading, error } = useFetch(`http://localhost:8800/api/hotels/room/${hotelId}`);
     const { dates } = useContext(SearchContext);
@@ -29,12 +30,13 @@ const Reserve = ({ setOpen, hotelId }) => {
         return dates;
     };
 
-    const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
+    const allDates = getDatesInRange(dates[0].startDate, dates[0].endDate);
 
     const isAvailable = (roomNumber) => {
         const isFound = roomNumber.unavailableDates.some((date) =>
-            alldates.includes(new Date(date).getTime())
+            allDates.includes(new Date(date).getTime())
         );
+        console.log(!isFound);
 
         return !isFound;
     };
@@ -49,14 +51,12 @@ const Reserve = ({ setOpen, hotelId }) => {
         );
     };
 
-    const navigate = useNavigate();
-
     const handleClick = async () => {
         try {
             await Promise.all(
                 selectedRooms.map((roomId) => {
                     const res = axios.put(`http://localhost:8800/api/rooms/availability/${roomId}`, {
-                        dates: alldates,
+                        dates: allDates,
                     });
                     return res.data;
                 })
@@ -85,8 +85,8 @@ const Reserve = ({ setOpen, hotelId }) => {
                             <div className="rPrice">{item.price}</div>
                         </div>
                         <div className="rSelectRooms">
-                            {item.roomNumbers.map((roomNumber) => (
-                                <div className="room">
+                            {item.roomNumbers.map((roomNumber, i) => (
+                                <div className="room" key={i}>
                                     <label>{roomNumber.number}</label>
                                     <input
                                         type="checkbox"

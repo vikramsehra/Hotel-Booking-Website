@@ -41,7 +41,9 @@ const HotelList = () => {
                         </div>
                         <div className="lsItem">
                             <label>Check-in Date</label>
-                            <span onClick={() => setOpenDate(!openDate)} >{`${format(dates[0].startDate, "MM/dd/yyyy")} to ${format(dates[0].endDate, "MM/dd/yyyy")}`}</span>
+                            <span onClick={() => setOpenDate(!openDate)} >
+                                {`${format(dates[0].startDate, "MM/dd/yyyy")} to ${format(dates[0].endDate, "MM/dd/yyyy")}`}
+                            </span>
                             {openDate && <DateRange onChange={(item) => setDates([item.selection])} minDate={new Date()} ranges={dates} />}
                         </div>
                         <div className="lsItem">
@@ -82,12 +84,14 @@ const HotelList = () => {
                         <button onClick={handleClick} >Search</button>
                     </div>
                     <div className="listResult">
-                        {loading ? "loading" : <>
-                            {data.map((item) => (
-                                <SearchItem item={item} key={item._id} />
-                            ))}
-                        </>}
-
+                        {
+                            loading ? "loading" :
+                                <>
+                                    {data.map((item) => (
+                                        <SearchItem item={item} key={item._id} />
+                                    ))}
+                                </>
+                        }
                     </div>
                 </div>
             </div>

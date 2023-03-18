@@ -11,6 +11,7 @@ const app = express();
 dotenv.config()
 
 mongoose.set("strictQuery", false);
+
 const connect = async () => {
     try {
         await mongoose.connect(process.env.MONGO);
@@ -34,6 +35,8 @@ app.use("/api/users", usersRoute);
 app.use("/api/hotels", hotelsRoute);
 app.use("/api/rooms", roomsRoute);
 
+
+// error handler middleware
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500
     const errorMessage = err.message || "Something went wrong!"

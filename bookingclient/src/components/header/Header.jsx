@@ -29,8 +29,8 @@ const Header = ({ type }) => {
     });
 
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext)
-
+    const { user } = useContext(AuthContext);
+    const { dispatch } = useContext(SearchContext);
 
     const handleOption = (name, operation) => {
         setOptions((prev) => {
@@ -39,8 +39,6 @@ const Header = ({ type }) => {
             }
         })
     }
-
-    const { dispatch } = useContext(SearchContext)
 
     const handleSearch = () => {
         dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
