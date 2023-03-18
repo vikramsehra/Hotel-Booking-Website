@@ -9,6 +9,9 @@ import cookieParser from 'cookie-parser'
 import cors from "cors"
 const app = express();
 dotenv.config()
+
+const path = require('path')
+
 const PORT = process.env.PORT || 8800
 
 mongoose.set("strictQuery", false);
@@ -35,6 +38,13 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/hotels", hotelsRoute);
 app.use("/api/rooms", roomsRoute);
+
+// static files
+app.use(express.static(path.join(__dirname, './bookingclient/dist')));
+
+app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "./bookingclient/dist/index.html"))
+})
 
 
 // error handler middleware
